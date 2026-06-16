@@ -2,3 +2,6 @@
   command = "pnpm --filter @open-design/landing-page build:static"
   publish = "apps/landing-page/out"
 
+[build.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+

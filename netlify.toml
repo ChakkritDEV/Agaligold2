@@ -1,4 +1,4 @@
 [build]
-  command = "pnpm --filter @open-design/landing-page build"
+  command = "pnpm --filter @open-design/landing-page build:static"
   publish = "apps/landing-page/out"
 

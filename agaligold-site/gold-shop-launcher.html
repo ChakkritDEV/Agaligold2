@@ -1,0 +1,309 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Holistic Gold Shop · Enterprise Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #F8FAFC;
+      --surface: #FFFFFF;
+      --fg:      #0F172A;
+      --muted:   #64748B;
+      --border:  #E2E8F0;
+      --accent:  #D4AF37;
+      --success: #10B981;
+      --danger:  #EF4444;
+      
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    header {
+      background: var(--fg);
+      color: white;
+      padding-block: 24px;
+      border-bottom: 4px solid var(--accent);
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--fg);
+    }
+    .brand-name h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand-name p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    main {
+      flex: 1;
+      padding-block: 64px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card:hover::before { opacity: 1; }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--bg);
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: var(--fg);
+    }
+    .card:hover .card-icon {
+      background: var(--accent);
+      color: var(--fg);
+    }
+
+    .card-content h2 {
+      margin: 0 0 8px 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .card-content p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--accent);
+    }
+
+    footer {
+      padding-block: 32px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container header-content">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 12h3v8h14v-8h3L12 3z"/><circle cx="12" cy="13" r="3"/></svg>
+        </div>
+        <div class="brand-name">
+          <h1>Holistic Gold Shop</h1>
+          <p>Enterprise Management System</p>
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <span style="display: block; font-weight: 600; font-size: 14px;">Administrator Access</span>
+        <span style="font-size: 12px; opacity: 0.7;">v1.4.2 · Secure Session</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 32px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 32px;">
+        <!-- Live Rates Overview -->
+        <section style="background: var(--fg); color: white; border-radius: var(--radius); padding: 32px; display: flex; align-items: center; justify-content: space-between; border-left: 8px solid var(--accent);">
+          <div>
+            <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 800; color: var(--accent);">Live Market Rates</h2>
+            <p style="margin: 0; opacity: 0.7; font-size: 14px;">Market Status: <span style="color: var(--success); font-weight: 600;">● OPEN</span> · Last Update: 10:45:02</p>
+          </div>
+          <div style="display: flex; gap: 40px;">
+            <div style="text-align: right;">
+              <span style="display: block; font-size: 11px; text-transform: uppercase; opacity: 0.6; letter-spacing: 0.05em;">Gold Bar Sell</span>
+              <span style="font-family: 'Roboto Mono', monospace; font-size: 24px; font-weight: 700; color: var(--accent);">42,150.00</span>
+            </div>
+            <div style="text-align: right;">
+              <span style="display: block; font-size: 11px; text-transform: uppercase; opacity: 0.6; letter-spacing: 0.05em;">Gold Bar Buy</span>
+              <span style="font-family: 'Roboto Mono', monospace; font-size: 24px; font-weight: 700; color: var(--accent);">42,050.00</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid">
+          <!-- POS Dashboard -->
+          <a href="pos-dashboard.html" class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M7 15h.01M11 15h2"/></svg>
+            </div>
+            <div class="card-content">
+              <h2>POS Trading Dashboard</h2>
+              <p>Dual-panel layout for buy/sell transactions, live gold pricing, and automated netting calculation.</p>
+            </div>
+            <div class="card-footer">
+              Launch POS System
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </div>
+          </a>
+
+          <!-- Stock & Inventory -->
+          <a href="inventory.html" class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+            <div class="card-content">
+              <h2>Stock & Inventory</h2>
+              <p>Real-time inventory management with RFID tracking, automated low-stock alerts, and value appraisal.</p>
+            </div>
+            <div class="card-footer">
+              Open Backoffice
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </div>
+          </a>
+
+          <!-- Manager Approval -->
+          <a href="manager-approval.html" class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <div class="card-content">
+              <h2>Manager Approval</h2>
+              <p>Streamlined workflow for discount requests, transaction overrides, and secure cashier authorization.</p>
+            </div>
+            <div class="card-footer">
+              Review Requests
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <aside style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 24px;">
+        <h3 style="margin: 0; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);">System Status</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--success);"></div>
+            <div style="flex: 1;">
+              <span style="display: block; font-weight: 600; font-size: 13px;">POS Terminals</span>
+              <span style="font-size: 12px; color: var(--muted);">4 Online · 0 Offline</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--success);"></div>
+            <div style="flex: 1;">
+              <span style="display: block; font-weight: 600; font-size: 13px;">Inventory Sync</span>
+              <span style="font-size: 12px; color: var(--muted);">Sync complete (2m ago)</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--danger);"></div>
+            <div style="flex: 1;">
+              <span style="display: block; font-weight: 600; font-size: 13px;">Approval Queue</span>
+              <span style="font-size: 12px; color: var(--danger); font-weight: 600;">2 Pending Actions</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding-top: 16px; border-top: 1px solid var(--border);">
+          <span style="display: block; font-size: 12px; color: var(--muted); margin-bottom: 8px;">Logged in as:</span>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--fg); color: white; display: grid; place-items: center; font-weight: 700; font-size: 14px;">JD</div>
+            <div>
+              <span style="display: block; font-weight: 700; font-size: 14px;">Jane Doe</span>
+              <span style="font-size: 11px; color: var(--muted);">System Manager</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 Holistic Gold Shop Solutions · Enterprise ERP System · <span style="color: var(--accent);">Secure Access Only</span>
+    </div>
+  </footer>
+
+</body>
+</html>

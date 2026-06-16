@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Holistic Gold Shop Launcher",
+  "entry": "gold-shop-launcher.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "primary": true,
+  "createdAt": "2026-06-11T05:38:00.742Z",
+  "updatedAt": "2026-06-11T05:38:00.747Z",
+  "sourceSkillId": "agent-browser",
+  "designSystemId": "default",
+  "metadata": {
+    "identifier": "gold-shop-launcher",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

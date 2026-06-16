@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Holistic Gold Shop ERP · Entry Point</title>
+  <style>
+    /* ─── tokens ───────────────────────────────────────────────────────── */
+    :root {
+      --bg:      #F8FAFC;
+      --surface: #FFFFFF;
+      --fg:      #0F172A;
+      --muted:   #64748B;
+      --border:  #E2E8F0;
+      --accent:  #D4AF37;
+      
+      --accent-soft: color-mix(in oklch, var(--accent) 14%, transparent);
+      --font-display: 'Inter', -apple-system, system-ui, sans-serif;
+      --font-body:    'Inter', -apple-system, system-ui, sans-serif;
+    }
+
+    /* ─── base ──────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin-inline: auto;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+      color: var(--fg);
+    }
+    header p {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* ─── grid ──────────────────────────────────────────────────────── */
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+
+    .screen-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+    }
+    .screen-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
+      border-color: var(--accent);
+    }
+
+    .screen-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      margin-bottom: 24px;
+    }
+    .screen-icon svg { width: 24px; height: 24px; stroke-width: 2; fill: none; stroke: currentColor; }
+
+    .screen-card h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .screen-card p {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 14px;
+      flex: 1;
+    }
+
+    .btn-launch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 14px;
+    }
+    .btn-launch::after { content: "→"; transition: transform 0.2s; }
+    .screen-card:hover .btn-launch::after { transform: translateX(4px); }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Holistic Gold Shop ERP</h1>
+      <p>Enterprise-grade POS & Management System for professional trading.</p>
+    </header>
+
+    <div class="screen-grid">
+      <!-- POS Dashboard -->
+      <a href="pos-dashboard.html" class="screen-card">
+        <div class="screen-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <h2>Trading Dashboard</h2>
+        <p>Live gold pricing, dual-panel trade-in workflow, and automated netting for cashier operations.</p>
+        <span class="btn-launch">Launch POS</span>
+      </a>
+
+      <!-- Manager Approval -->
+      <a href="manager-approval.html" class="screen-card">
+        <div class="screen-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <h2>Manager Approvals</h2>
+        <p>Real-time request handling for discount overrides, inventory adjustments, and sensitive transactions.</p>
+        <span class="btn-launch">Open Worklist</span>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

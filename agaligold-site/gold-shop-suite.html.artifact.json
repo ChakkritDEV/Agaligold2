@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Holistic Gold Shop Management System",
+  "entry": "gold-shop-suite.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "primary": true,
+  "createdAt": "2026-06-11T05:31:16.002Z",
+  "updatedAt": "2026-06-11T05:31:16.007Z",
+  "sourceSkillId": "agent-browser",
+  "designSystemId": "default",
+  "metadata": {
+    "identifier": "gold-shop-suite",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

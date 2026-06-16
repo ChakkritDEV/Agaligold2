@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>POS Terminal · Agaligold</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── vault tokens ─────────────────────────────────────────────── */
+    :root {
+      --bg:      #F8FAFC;
+      --surface: #FFFFFF;
+      --fg: #0F172A; /* Navy */
+      --muted: #64748B;
+      --border: #0F172A; /* Vault: High-contrast thick borders */
+      --border-soft: #E2E8F0;
+      --accent: #D4AF37; /* Gold */
+      --success: #10B981;
+      --danger: #EF4444;
+      
+      --radius: 2px; /* Rigid Vault Radius */
+      --vault-bw: 2px;
+      --shadow-brutal: 12px 12px 0 var(--border);
+      --shadow-brutal-sm: 6px 6px 0 var(--border);
+      --tracking-tight: -0.01em;
+      --tracking-wide: 0.16em;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden;
+      /* Hardened Blueprint Grid Texture */
+      background-image: 
+        linear-gradient(var(--border-soft) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .num { font-family: 'Roboto Mono', monospace; font-variant-numeric: tabular-nums; }
+    .label-xs { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: var(--tracking-wide); opacity: 0.85; }
+
+    /* ─── integrity header strip ───────────────────────────────────── */
+    .integrity-strip {
+      background: var(--fg);
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 12px 32px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      z-index: 1000;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    .integrity-node { display: flex; gap: 40px; }
+    .status-pulse { display: inline-block; width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulse 1.5s infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.7); } 100% { opacity: 1; transform: scale(1); } }
+
+    /* ─── primary header ───────────────────────────────────────────── */
+    header.topbar {
+      background: var(--fg);
+      color: white;
+      padding-block: 32px;
+      padding-inline: 40px;
+      height: auto;
+      border-bottom: var(--vault-bw) solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 900;
+    }
+    .brand { display: flex; align-items: center; gap: 24px; }
+    .logo-mark { width: 56px; height: 56px; background: var(--accent); border-radius: 1px; display: grid; place-items: center; color: var(--fg); font-weight: 900; font-size: 26px; border: 3px solid white; box-shadow: 6px 6px 0 rgba(0,0,0,0.5); }
+    .brand-name h1 { margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -0.01em; color: var(--accent); text-shadow: 2px 2px 0 rgba(0,0,0,0.3); }
+    .brand-name p { margin: 4px 0 0 0; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.25em; opacity: 0.6; }
+
+    /* ─── global command bar ───────────────────────────────────────── */
+    .command-bar {
+      background: var(--surface);
+      border-bottom: var(--vault-bw) solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .command-input-group { flex: 1; display: flex; align-items: center; gap: 16px; background: var(--bg); border: var(--vault-bw) solid var(--border); padding: 12px 20px; border-radius: 1px; box-shadow: inset 4px 4px 0 rgba(0,0,0,0.05); }
+    .command-input { flex: 1; border: none; background: transparent; font-family: 'Roboto Mono', monospace; font-size: 14px; font-weight: 600; color: var(--fg); outline: none; }
+    .command-label { font-size: 10px; font-weight: 900; color: var(--muted); text-transform: uppercase; border: 1px solid var(--border-soft); padding: 3px 8px; border-radius: 1px; background: white; }
+
+    .rfid-status { display: flex; align-items: center; gap: 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 900; background: rgba(16, 185, 129, 0.1); color: #10B981; padding: 8px 16px; border: var(--vault-bw) solid var(--success); }
+
+    .live-prices { display: flex; gap: 48px; }
+    .price-item { display: flex; flex-direction: column; align-items: flex-end; }
+    .price-val { font-family: 'Roboto Mono', monospace; font-weight: 900; color: var(--accent); font-size: 28px; line-height: 1; }
+
+    /* ─── main layout ───────────────────────────────────────────────── */
+    .main-content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      padding: 40px;
+      gap: 40px;
+      position: relative;
+    }
+    .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: rgba(212, 175, 55, 0.15); animation: scan 8s linear infinite; pointer-events: none; z-index: 10; }
+    @keyframes scan { from { top: -4px; } to { top: 100%; } }
+
+    .panel { 
+      display: flex; 
+      flex-direction: column; 
+      overflow: hidden; 
+      background: var(--surface); 
+      border: var(--vault-bw) solid var(--border);
+      box-shadow: var(--shadow-brutal);
+      border-radius: var(--radius);
+      position: relative;
+    }
+    .panel-header { padding: 16px 24px; border-bottom: var(--vault-bw) solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+    .panel-header h2 { margin: 0; font-size: 13px; font-weight: 950; text-transform: uppercase; letter-spacing: 0.15em; color: var(--fg); }
+    
+    .buy-panel { background: #F1F5F9; }
+    .buy-panel .panel-header { background: #E2E8F0; }
+
+    /* ─── tables ────────────────────────────────────────────────────── */
+    .table-container { flex: 1; overflow-y: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th { position: sticky; top: 0; background: var(--surface); padding: 16px 24px; text-align: left; font-size: 10px; text-transform: uppercase; font-weight: 950; color: var(--muted); border-bottom: var(--vault-bw) solid var(--border); z-index: 10; letter-spacing: 0.1em; }
+    .buy-panel th { background: #F1F5F9; }
+    td { padding: 16px 24px; border-bottom: 1px solid var(--border-soft); background: var(--surface); font-weight: 800; font-size: 14px; color: var(--fg); }
+    .buy-panel td { background: transparent; }
+    
+    .item-img { width: 44px; height: 44px; border-radius: 1px; border: var(--vault-bw) solid var(--border); background: var(--bg); }
+    .delete-btn { color: var(--danger); opacity: 0.5; cursor: pointer; transition: all 0.2s; }
+    .delete-btn:hover { opacity: 1; transform: scale(1.2) rotate(8deg); }
+
+    /* ─── bottom bar ────────────────────────────────────────────────── */
+    .bottombar {
+      background: var(--surface);
+      border-top: var(--vault-bw) solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 40px;
+      z-index: 100;
+      box-shadow: 0 -15px 50px rgba(0,0,0,0.1);
+    }
+    .netting { display: flex; flex-direction: column; }
+    .net-label { font-size: 11px; text-transform: uppercase; font-weight: 950; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.2em; }
+    .net-amount { font-size: 56px; font-weight: 950; color: var(--fg); font-family: 'Roboto Mono', monospace; line-height: 1; letter-spacing: -0.03em; }
+    
+    .btn-vault { border: var(--vault-bw) solid var(--border); background: var(--surface); color: var(--fg); font-weight: 950; padding: 12px 20px; border-radius: 1px; display: flex; align-items: center; gap: 10px; cursor: pointer; text-transform: uppercase; font-size: 11px; letter-spacing: 0.1em; transition: all 0.1s; box-shadow: var(--shadow-brutal-sm); }
+    .btn-vault:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0 var(--border); background: var(--fg); color: white; }
+    .btn-vault:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--border); }
+
+    .btn-checkout { background: var(--accent); color: var(--fg); padding: 24px 80px; border-radius: 1px; font-weight: 950; font-size: 24px; border: var(--vault-bw) solid var(--border); text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer; box-shadow: var(--shadow-brutal); transition: all 0.1s; }
+    .btn-checkout:hover { transform: translate(-6px, -6px); box-shadow: 18px 18px 0 var(--border); }
+    .btn-checkout:active { transform: translate(4px, 4px); box-shadow: 4px 4px 0 var(--border); }
+
+    /* Icons */
+    .icon { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+</head>
+<body>
+
+  <!-- Integrity Strip -->
+  <div class="integrity-strip">
+    <div class="integrity-node">
+      <span>NODE: <span class="num">AGALI-B01-S04</span></span>
+      <span>ENCRYPTION: <span class="num">AES-512-GCM</span></span>
+      <span>BIO_AUTH: <span style="color: var(--success); font-weight: 900;">SECURED</span></span>
+      <span style="color: white;">SYSTEM_TIME: <span id="clock" class="num">10:45:02</span> UTC</span>
+    </div>
+    <div>
+      <span class="status-pulse"></span>
+      OPERATIONAL_INTEGRITY: OPTIMAL [12MS]
+    </div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <a href="index.html" style="color: var(--accent); margin-right: 8px;"><svg class="icon" style="width: 24px; height: 24px;" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></a>
+      <div class="logo-mark">A</div>
+      <div class="brand-name">
+        <h1>AGALIGOLD</h1>
+        <p>Vault Terminal · v9.0 · POS Mode</p>
+      </div>
+    </div>
+
+    <div class="live-prices">
+      <div class="price-item">
+        <span class="label-xs" style="color: white; opacity: 0.7; margin-bottom: 6px; display: block;">Gold Bar Sell</span>
+        <span class="price-val num">42,150.00</span>
+      </div>
+      <div class="price-item">
+        <span class="label-xs" style="color: white; opacity: 0.7; margin-bottom: 6px; display: block;">Gold Bar Buy</span>
+        <span class="price-val num">42,050.00</span>
+      </div>
+    </div>
+
+    <div class="user-info" style="text-align: right; border-left: 4px solid rgba(212, 175, 55, 0.4); padding-left: 40px;">
+      <div style="font-weight: 950; font-size: 18px; letter-spacing: 0.1em; color: var(--accent);">CHIEF CASHIER</div>
+      <div style="font-size: 12px; opacity: 0.7; text-transform: uppercase; font-weight: 900; font-family: 'Roboto Mono', monospace;">ANNA SRITRANG (B01-04) · SESSION_0x8F2</div>
+    </div>
+  </header>
+
+  <div class="command-bar">
+    <div class="command-input-group">
+      <span class="label-xs" style="color: var(--fg); opacity: 1;">CMD_INPUT</span>
+      <input type="text" class="command-input" placeholder="SEARCH_MEMBER_ID | SCAN_RFID | EXEC_TRANS_CODE | NETTING_VERIFY..." autofocus>
+      <div style="display: flex; gap: 6px;">
+        <span class="command-label">CTRL</span>
+        <span class="command-label">ENTER</span>
+      </div>
+    </div>
+    <div class="rfid-status">
+      <span class="status-pulse" style="width: 6px; height: 6px; margin-right: 8px;"></span>
+      RFID: ACTIVE_PULSE_100%
+    </div>
+  </div>
+
+  <main class="main-content">
+    <div class="scan-line"></div>
+    <!-- Outbound Panel -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Outbound Cart (Sales)</h2>
+        <button class="btn-vault">+ SCAN_ASSET</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ASSET_ID/RFID</th>
+              <th>PREVIEW</th>
+              <th>WEIGHT (G)</th>
+              <th>LABOR (฿)</th>
+              <th style="text-align: right;">TOTAL (฿)</th>
+              <th width="50"></th>
+            </tr>
+          </thead>
+          <tbody class="num">
+            <tr>
+              <td style="font-weight: 800; color: var(--fg);">G-965-N042</td>
+              <td><div class="item-img" style="background: var(--bg); display: grid; place-items: center; color: var(--accent); font-weight: 900; font-size: 10px;">96.5%</div></td>
+              <td>15.240</td>
+              <td>1,250.00</td>
+              <td style="text-align: right; font-weight: 900; font-size: 16px;">43,400.00</td>
+              <td style="text-align: center;"><svg class="delete-btn icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Inbound Panel -->
+    <section class="panel buy-panel">
+      <div class="panel-header">
+        <h2>Inbound / Trade-in (Buy Back)</h2>
+        <button class="btn-vault" style="background: white;">+ MANUAL_ENTRY</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>CATEGORY</th>
+              <th>WEIGHT (G)</th>
+              <th>MARKET_VAL</th>
+              <th>DEDUCTION</th>
+              <th style="text-align: right;">CREDIT (฿)</th>
+              <th width="50"></th>
+            </tr>
+          </thead>
+          <tbody class="num">
+            <tr>
+              <td style="font-weight: 800;">96.5% JEWELRY</td>
+              <td>15.118</td>
+              <td>42,482.00</td>
+              <td style="color: var(--danger); font-weight: 900;">-5.00%</td>
+              <td style="text-align: right; font-weight: 900; color: var(--success); font-size: 16px;">40,358.00</td>
+              <td style="text-align: center;"><svg class="delete-btn icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottombar">
+    <div style="display: flex; gap: 64px;">
+      <div class="vault-box" style="padding: 16px 32px; border-color: var(--border-soft); box-shadow: var(--shadow-brutal-sm);">
+        <span class="net-label">Summary_Nodes</span>
+        <div style="display: flex; gap: 24px; font-weight: 800; font-size: 15px;">
+          <span style="color: var(--fg);">OUT: <span class="num">43,400.00</span></span>
+          <span style="opacity: 0.2;">|</span>
+          <span style="color: var(--success);">IN: <span class="num">40,358.00</span></span>
+        </div>
+      </div>
+      <div class="netting">
+        <span class="net-label">Net Balance Due</span>
+        <span class="net-amount">3,042.00</span>
+      </div>
+    </div>
+
+    <div class="actions" style="display: flex; align-items: center; gap: 40px;">
+      <div class="payment-methods" style="display: flex; gap: 16px;">
+        <button class="btn-vault"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg> CASH</button>
+        <button class="btn-vault"><svg class="icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> CARD</button>
+        <button class="btn-vault"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> QR_TRANSFER</button>
+      </div>
+      <button class="btn-checkout">Finalize Order</button>
+    </div>
+  </footer>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getUTCHours()).padStart(2, '0');
+      const m = String(now.getUTCMinutes()).padStart(2, '0');
+      const s = String(now.getUTCSeconds()).padStart(2, '0');
+      const clockElement = document.getElementById('clock');
+      if (clockElement) clockElement.textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>

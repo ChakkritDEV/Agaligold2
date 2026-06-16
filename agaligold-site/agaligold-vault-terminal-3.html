@@ -1,0 +1,211 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agaligold · Vault Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── vault tokens ─────────────────────────────────────────────── */
+    :root {
+      --bg:      #F8FAFC;
+      --surface: #FFFFFF;
+      --fg: #0F172A; /* Navy */
+      --muted: #64748B;
+      --border: #0F172A; /* Vault: High-contrast thick borders */
+      --border-soft: #E2E8F0;
+      --accent: #D4AF37; /* Gold */
+      --success: #10B981;
+      --danger: #EF4444;
+      --radius: 2px; /* Rigid Vault Radius */
+      --vault-bw: 2px;
+      --shadow-brutal: 8px 8px 0 var(--border);
+      --shadow-brutal-sm: 4px 4px 0 var(--border);
+      --tracking-tight: -0.01em;
+      --tracking-wide: 0.1em;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', system-ui, sans-serif; line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+    .num { font-family: 'Roboto Mono', monospace; font-variant-numeric: tabular-nums; }
+    .label-xs { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: var(--tracking-wide); opacity: 0.6; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; width: 100%; }
+    .integrity-strip { background: var(--fg); color: var(--accent); font-family: 'Roboto Mono', monospace; font-size: 9px; font-weight: 700; padding: 6px 32px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(212, 175, 55, 0.3); text-transform: uppercase; letter-spacing: 0.1em; }
+    .integrity-node { display: flex; gap: 24px; }
+    .status-pulse { display: inline-block; width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulse 1.5s infinite; }
+    .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: rgba(212, 175, 55, 0.1); animation: scan 4s linear infinite; pointer-events: none; }
+    @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes scan { from { top: -2px; } to { top: 100%; } }
+    header { background: var(--fg); color: white; padding-block: 24px; border-bottom: var(--vault-bw) solid var(--accent); }
+    .header-content { display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 16px; }
+    .logo-mark { width: 44px; height: 44px; background: var(--accent); border-radius: 2px; display: grid; place-items: center; color: var(--fg); font-weight: 900; font-size: 22px; border: 2px solid white; box-shadow: 4px 4px 0 rgba(0,0,0,0.3); }
+    .brand-name h1 { margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -0.01em; color: var(--accent); }
+    .brand-name p { margin: 0; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.6; }
+    main { flex: 1; padding-block: 48px; position: relative; }
+    .layout-split { display: grid; grid-template-columns: 1fr 360px; gap: 40px; align-items: start; }
+    .market-box { background: var(--fg); color: white; border: var(--vault-bw) solid var(--accent); padding: 32px; border-radius: var(--radius); display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; position: relative; }
+    .market-box::before { content: 'SYSTEM OPERATIONAL'; position: absolute; top: -10px; left: 24px; background: var(--fg); padding: 2px 10px; font-size: 9px; font-weight: 900; color: var(--success); border: 1px solid var(--success); }
+    .price-grid { display: flex; gap: 48px; }
+    .price-node { text-align: right; }
+    .price-val { font-size: 28px; font-weight: 800; color: var(--accent); font-family: 'Roboto Mono', monospace; }
+    .trend-spark { height: 24px; width: 60px; opacity: 0.5; margin-left: 12px; }
+    .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+    .app-card { background: var(--surface); border: var(--vault-bw) solid var(--border); padding: 32px; text-decoration: none; color: inherit; transition: all 0.1s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; gap: 24px; border-radius: var(--radius); position: relative; overflow: hidden; }
+    .app-card:hover { transform: translate(-4px, -4px); box-shadow: var(--shadow-brutal); border-color: var(--accent); }
+    .app-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--border); background: var(--fg); color: white; }
+    .app-card:active .card-icon { border-color: var(--accent); color: var(--accent); background: rgba(255,255,255,0.05); }
+    .app-card:active .card-link { border-color: var(--accent); color: var(--accent); }
+    .card-icon { width: 52px; height: 52px; background: var(--bg); border-radius: 2px; display: grid; place-items: center; color: var(--fg); border: 2px solid var(--border); transition: all 0.2s; }
+    .app-card:hover .card-icon { background: var(--accent); color: var(--fg); border-color: var(--fg); transform: rotate(-2deg); }
+    .app-card h2 { margin: 0; font-size: 19px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em; }
+    .app-card p { margin: 0; color: var(--muted); font-size: 14px; font-weight: 500; line-height: 1.4; }
+    .app-card:active p { color: rgba(255,255,255,0.6); }
+    .card-link { margin-top: auto; font-weight: 900; font-size: 11px; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 8px; letter-spacing: 0.05em; border: 1px solid var(--border-soft); padding: 8px 12px; width: fit-content; border-radius: 2px; }
+    .app-card:hover .card-link { background: var(--fg); color: white; border-color: var(--fg); }
+    .sidebar { display: flex; flex-direction: column; gap: 24px; }
+    .vault-panel { padding: 24px; border-radius: var(--radius); background: var(--surface); border: var(--vault-bw) solid var(--border); box-shadow: var(--shadow-brutal-sm); }
+    .vault-panel h3 { margin: 0 0 20px 0; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); border-bottom: 2px solid var(--bg); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .vault-panel h3::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 1px; }
+    .status-list { display: flex; flex-direction: column; gap: 16px; }
+    .status-row { display: flex; align-items: center; gap: 16px; padding: 10px; background: var(--bg); border: 1px solid var(--border-soft); border-radius: 2px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .status-info { flex: 1; }
+    .status-name { display: block; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; }
+    .status-meta { display: block; font-size: 10px; color: var(--muted); font-weight: 600; font-family: 'Roboto Mono', monospace; }
+    .session-card { display: flex; align-items: center; gap: 20px; padding: 12px; border: 1px solid var(--border-soft); background: var(--bg); }
+    .session-avatar { width: 48px; height: 48px; background: var(--fg); color: var(--accent); border: 2px solid var(--accent); border-radius: 2px; display: grid; place-items: center; font-weight: 900; font-size: 18px; }
+    .op-log { margin-top: 48px; background: #000; color: #33FF33; font-family: 'Roboto Mono', monospace; font-size: 10px; padding: 16px 24px; border-radius: var(--radius); border: 1px solid #111; opacity: 0.8; position: relative; overflow: hidden; }
+    .op-log::after { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none; }
+    .log-line { margin-bottom: 4px; display: flex; gap: 16px; }
+    .log-ts { opacity: 0.4; }
+    footer { padding-block: 48px; text-align: center; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); opacity: 0.5; }
+    @media (max-width: 1024px) { .layout-split { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="integrity-strip">
+    <div class="integrity-node">
+      <span>NODE: B01-CENTRAL-01</span>
+      <span>SECURE: AES-256-GCM</span>
+      <span>LATENCY: 12ms</span>
+      <span style="color: white;">SYSTEM TIME: <span id="clock" class="num">10:45:02</span> UTC</span>
+    </div>
+    <div><span class="status-pulse"></span> CONNECTIVITY: OPTIMAL</div>
+  </div>
+  <header>
+    <div class="container header-content">
+      <div class="brand">
+        <div class="logo-mark">A</div>
+        <div class="brand-name">
+          <h1>AGALIGOLD</h1>
+          <p>Vault Systems · Enterprise Layer</p>
+        </div>
+      </div>
+      <div style="text-align: right; border-left: 2px solid rgba(255,255,255,0.1); padding-left: 32px;">
+        <span style="display: block; font-weight: 900; font-size: 14px; letter-spacing: 0.05em; color: var(--accent);">AUTHORIZED OPERATOR</span>
+        <span style="font-size: 10px; opacity: 0.5; text-transform: uppercase; font-weight: 800;">Session: 0xF2A...9C1</span>
+      </div>
+    </div>
+  </header>
+  <main class="container">
+    <div class="scan-line"></div>
+    <div class="layout-split">
+      <div class="content">
+        <section class="market-box">
+          <div>
+            <h2 style="margin: 0; font-size: 26px; font-weight: 900; letter-spacing: -0.02em; color: var(--accent);">LIVE ASSET VALUATION</h2>
+            <p style="margin: 4px 0 0 0; opacity: 0.6; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Oracle Feed: LBMA Gold Price · <span class="num">10:45:02</span></p>
+          </div>
+          <div class="price-grid">
+            <div class="price-node" style="display: flex; align-items: center;">
+              <div><span class="price-label label-xs">Gold Bar Sell</span><span class="price-val">42,150.00</span></div>
+              <svg class="trend-spark" viewBox="0 0 60 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M0 18 L10 14 L20 16 L30 10 L40 12 L50 6 L60 8" /></svg>
+            </div>
+            <div class="price-node" style="display: flex; align-items: center;">
+              <div><span class="price-label label-xs">Gold Bar Buy</span><span class="price-val">42,050.00</span></div>
+              <svg class="trend-spark" viewBox="0 0 60 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M0 20 L10 18 L20 19 L30 14 L40 15 L50 10 L60 12" /></svg>
+            </div>
+          </div>
+        </section>
+        <div class="apps-grid">
+          <a href="pos-dashboard.html" class="app-card">
+            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></div>
+            <div><h2>POS Terminal</h2><p>Execute buy/sell transactions, member trade-ins, and price-locked orders with real-time netting.</p></div>
+            <div class="card-link">Initialize Terminal <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+          </a>
+          <a href="inventory.html" class="app-card">
+            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg></div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center;"><h2>Inventory Vault</h2><div style="display: flex; gap: 4px;"><span class="status-pulse" style="width: 4px; height: 4px;"></span><span class="status-pulse" style="width: 4px; height: 4px; animation-delay: 0.2s;"></span><span class="status-pulse" style="width: 4px; height: 4px; animation-delay: 0.4s;"></span></div></div>
+              <p>High-security asset registry featuring RFID pulse monitoring, location tracking, and real-time appraisal.</p>
+            </div>
+            <div class="card-link">Enter Backoffice <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+          </a>
+          <a href="manager-approval.html" class="app-card">
+            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+            <div><h2>Authorization</h2><p>Process secure discount overrides, transaction approvals, and high-value cashier authorizations.</p></div>
+            <div class="card-link">Audit Requests <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+          </a>
+        </div>
+        <div class="op-log">
+          <div class="log-line"><span class="log-ts">[10:44:50]</span> <span>AUTH_SUCCESS: Session 0xF2A...9C1 authorized for NODE B01.</span></div>
+          <div class="log-line"><span class="log-ts">[10:45:00]</span> <span>PRICE_UPDATE: LBMA Gold Price sync completed. Delta: +0.02%.</span></div>
+          <div class="log-line"><span class="log-ts">[10:45:02]</span> <span>RFID_PULSE: 1,428 items verified across 12 scanners. SCAN_ALL: SUCCESS.</span></div>
+          <div class="log-line"><span class="log-ts">[10:45:05]</span> <span style="color: var(--accent);">LOG: TERMINAL_IDLE: Awaiting operator input...</span></div>
+        </div>
+      </div>
+      <aside class="sidebar">
+        <div class="vault-panel">
+          <h3>Terminal Registry</h3>
+          <div class="status-list">
+            <div class="status-row">
+              <div class="status-dot" style="background: var(--success); box-shadow: 0 0 8px var(--success);"></div>
+              <div class="status-info"><span class="status-name">System Core</span><span class="status-meta">LOAD: 0.04% · UPTIME: 142D</span></div>
+            </div>
+            <div class="status-row">
+              <div class="status-dot" style="background: var(--success);"></div>
+              <div class="status-info"><span class="status-name">RFID Network</span><span class="status-meta">12 ACTIVE · 0 FAULT</span></div>
+            </div>
+            <div class="status-row" style="border-color: var(--danger);"><div class="status-dot" style="background: var(--danger); animation: pulse 0.5s infinite;"></div><div class="status-info"><span class="status-name" style="color: var(--danger);">Priority Alerts</span><span class="status-meta" style="color: var(--danger);">2 PENDING OVERRIDES</span></div></div>
+          </div>
+        </div>
+        <div class="vault-panel">
+          <h3>Health & Identity</h3>
+          <div class="session-card">
+            <div class="session-avatar">JD</div>
+            <div><span style="display: block; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 0.02em;">Jane Doe</span><span style="font-size: 10px; color: var(--muted); font-weight: 700; text-transform: uppercase;">Senior Administrator</span></div>
+          </div>
+          <div style="margin-top: 16px; padding: 12px; background: #000; border-radius: 2px;">
+            <span class="label-xs" style="color: rgba(255,255,255,0.4);">Terminal Health</span>
+            <div style="display: flex; gap: 2px; margin-top: 4px;">
+              <div style="flex: 1; height: 4px; background: var(--success);"></div>
+              <div style="flex: 1; height: 4px; background: var(--success);"></div>
+              <div style="flex: 1; height: 4px; background: var(--success);"></div>
+              <div style="flex: 1; height: 4px; background: var(--success);"></div>
+              <div style="flex: 1; height: 4px; background: var(--success);"></div>
+              <div style="flex: 1; height: 4px; background: var(--success);"></div>
+              <div style="flex: 1; height: 4px; background: var(--muted); opacity: 0.2;"></div>
+            </div>
+          </div>
+          <button style="width: 100%; margin-top: 16px; background: var(--fg); color: white; border: var(--vault-bw) solid var(--border); padding: 12px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: 2px;">Terminate Terminal Session</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getUTCHours()).padStart(2, '0');
+      const m = String(now.getUTCMinutes()).padStart(2, '0');
+      const s = String(now.getUTCSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+  <footer>&copy; 2026 AGALIGOLD VAULT SYSTEMS · SECURE ENTERPRISE LAYER · UNAUTHORIZED ACCESS PROHIBITED</footer>
+</body>
+</html>

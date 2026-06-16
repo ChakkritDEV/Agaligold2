@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Agaligold Vault Terminal Launcher",
+  "entry": "agaligold-vault-terminal.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "primary": true,
+  "createdAt": "2026-06-16T02:57:35.069Z",
+  "updatedAt": "2026-06-16T02:57:35.073Z",
+  "sourceSkillId": "agent-browser",
+  "designSystemId": "default",
+  "metadata": {
+    "identifier": "agaligold-vault-terminal",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

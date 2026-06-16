@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Agaligold Vault Terminal · Brutalist Pass",
+  "entry": "agaligold-vault-terminal-3.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "primary": true,
+  "createdAt": "2026-06-16T03:05:35.714Z",
+  "updatedAt": "2026-06-16T03:05:35.717Z",
+  "sourceSkillId": "agent-browser",
+  "designSystemId": "default",
+  "metadata": {
+    "identifier": "agaligold-vault-terminal",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

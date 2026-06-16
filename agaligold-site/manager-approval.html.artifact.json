@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "manager-approval.html",
+  "entry": "manager-approval.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-06-11T05:27:27.930Z",
+  "updatedAt": "2026-06-11T05:27:27.930Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

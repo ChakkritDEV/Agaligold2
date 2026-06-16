@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "pos-dashboard-alt.html",
+  "entry": "pos-dashboard-alt.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-06-11T05:28:28.521Z",
+  "updatedAt": "2026-06-11T05:28:28.521Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

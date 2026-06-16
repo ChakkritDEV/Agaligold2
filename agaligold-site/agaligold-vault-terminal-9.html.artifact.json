@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Agaligold Vault Terminal · v8.0 Operational Absolute",
+  "entry": "agaligold-vault-terminal-9.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "primary": true,
+  "createdAt": "2026-06-16T03:23:00.812Z",
+  "updatedAt": "2026-06-16T03:23:00.817Z",
+  "sourceSkillId": "agent-browser",
+  "designSystemId": "default",
+  "metadata": {
+    "identifier": "agaligold-vault-terminal",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

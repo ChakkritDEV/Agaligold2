@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "agaligold-vault-terminal-5.html",
+  "entry": "agaligold-vault-terminal-5.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-06-16T03:10:51.135Z",
+  "updatedAt": "2026-06-16T03:10:51.135Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

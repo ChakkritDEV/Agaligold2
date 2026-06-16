@@ -1,0 +1,182 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Holistic Gold Shop · Enterprise Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Brand Palette per Master Prompt */
+      --bg:      #F8FAFC;   /* Off-White */
+      --surface: #FFFFFF;   /* Pure White */
+      --fg:      #0F172A;   /* Navy Blue */
+      --muted:   #64748B;   /* Slate Grey */
+      --border:  #E2E8F0;   /* Soft Grey */
+      --accent:  #D4AF37;   /* Premium Gold */
+      --success: #10B981;   /* Semantic Green */
+      --danger:  #EF4444;   /* Semantic Red */
+      
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* ─── header ────────────────────────────────────────────────────── */
+    header {
+      background: var(--fg);
+      color: white;
+      padding-block: 28px;
+      border-bottom: 4px solid var(--accent);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .brand-logo {
+      width: 52px;
+      height: 52px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--fg);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    }
+    .brand-name h1 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .brand-name p {
+      margin: 4px 0 0 0;
+      font-size: 13px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 500;
+    }
+
+    /* ─── main The **Holistic Gold Shop Management System** enterprise suite is now complete and visually synchronized. The system is designed with a "Pro & Clean" aesthetic, utilizing a Navy Blue primary palette, Premium Gold accents, and monospaced typography for precise financial data.
+
+The suite includes:
+1.  **Central Launcher (`index.html`)**: A high-level entry point connecting all modules.
+2.  **POS Trading Dashboard (`pos-dashboard.html`)**: A dual-panel interface for buying and selling gold with live price tracking and automated netting.
+3.  **Stock & Inventory (`inventory.html`)**: A backoffice dashboard with RFID tracking, automated alerts, and real-time value appraisal.
+4.  **Manager Approval (`manager-approval.html`)**: A focused workflow for authorizing discounts and secure overrides.
+
+<artifact identifier="gold-shop-suite" type="text/html" title="Holistic Gold Shop Management System">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Holistic Gold Shop · Enterprise Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #F8FAFC;
+      --surface: #FFFFFF;
+      --fg:      #0F172A;
+      --muted:   #64748B;
+      --border:  #E2E8F0;
+      --accent:  #D4AF37;
+      --success: #10B981;
+      --danger:  #EF4444;
+      
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* ─── header ────────────────────────────────────────────────────── */
+    header {
+      background: var(--fg);
+      color: white;
+      padding-block: 24px;
+      border-bottom: 4px solid var(--accent);
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--fg);
+    }
+    .brand-name h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand-name p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing
